@@ -2,6 +2,7 @@ const searchBook = () => {
     const search = document.getElementById('search-field');
     const searchValue = search.value;
     toggleSpinner('block');
+
     if (searchValue === '') {
 
         console.log("No Value");
@@ -22,14 +23,15 @@ const searchBook = () => {
 const toggleSpinner = displayStyle => {
     document.getElementById('spinner').style.display = displayStyle;
 }
-
-
+//search function
+const toggleSearchResult = displayStyle => {
+    document.getElementById('search-result').style.display = displayStyle;
+}
 const displaySearchResult = (datas, searchNumber) => {
     const divSearchResult = document.getElementById('search-result');
     divSearchResult.textContent = '';
     const numFound = document.getElementById('searchNumber');
     numFound.innerText = "Total search results: " + searchNumber;
-
 
     datas.forEach(data => {
         let authorNames, firstPublished, bookTitle;
@@ -60,37 +62,30 @@ const displaySearchResult = (datas, searchNumber) => {
         }
         const createDiv = document.createElement('div');
         createDiv.classList.add('col-lg-3');
+
         createDiv.innerHTML = `
-        <div onclick="displayImage('${data.cover_i}')">
-            <h2>${bookTitle}</h2>
-            <h5>${authorNames}</h5>
-            <h5>${firstPublished}</h5>
+        <div class="card-group">
+            <div class="card" style="max-width: 600px;">
+                <div class="row no-gutters">
+                    <div class="col-md-4">
+                        <img src="https://covers.openlibrary.org/b/id/${data.cover_i}-L.jpg" class="card-img" alt="...">
+                       
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                        <h5 class="card-title">${bookTitle.slice(0, 15)}</h5>
+                        <p class="card-text">by ${authorNames}<br>Published By: ${data.publisher}</p>
+                        <p class="card-text"><small class="text-muted">First Published on: ${firstPublished}</small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-            `;
-        createDiv.style.padding = '2%';
-        createDiv.style.border = '1px solid';
+        `
+        // createDiv.style.padding = '2%';
+        //createDiv.style.border = '1px solid';
         createDiv.style.margin = '2%';
         divSearchResult.appendChild(createDiv);
     });
     toggleSpinner('none');
-
-
-}
-
-
-const displayImage = cover_i => {
-    const bookImage = document.getElementById('book-details');
-    bookImage.textContent = '';
-    const div = document.createElement('div');
-    div.classList.add('col');
-    div.innerHTML = `
-   
-        <div class="row g-0">
-            <div class="col-md-4">
-                <img src="https://covers.openlibrary.org/b/id/${cover_i}-M.jpg" class="img-fluid rounded-start" alt="...">
-            </div>
-        </div>
-    
-    `;
-    bookImage.appendChild(div);
 }
